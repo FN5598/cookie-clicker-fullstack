@@ -1,0 +1,78 @@
+.factories-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;    
+    overflow-y: auto;
+}
+
+.factory-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 5px solid rgba(129, 102, 69, 1);
+    border-right: 5px solid rgba(129, 102, 69, 1);
+    border-top: 5px solid rgba(177, 146, 110, 1);
+    border-left: 5px solid rgba(177, 146, 110, 1);
+    padding-right: 3px;
+    max-height: 64px;
+    
+    
+    background-image: url('http://localhost:3000/images/Factory-background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    cursor: pointer;
+    transition: filter 0.3s ease;
+}
+
+.factory-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.factory-container:hover {
+    filter: brightness(120%);
+}
+
+.factory-info {
+    width: 100%;
+}
+
+.factory-image {
+    max-width: 62px;
+    margin-right: 5px
+}
+
+.factory-name {
+    color: white;
+    font-size: 35px;
+    text-shadow: 3px 3px 4px rgba(0, 0, 0, 0.7);
+}
+
+.factory-price {
+    color: rgba(71, 202, 71, 1);
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+    padding-left: 18px;
+    position: relative;
+}
+
+.factory-price::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0%;
+    width: 18px;
+    height: 18px;
+    background-image: url('http://localhost:3000/images/Big-cookie.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.factory-amount {
+    font-size: 70px;
+    color: ;
+    filter: opacity(30%);
+}

@@ -1,0 +1,20 @@
+.home-page-grid {
+    display: grid;
+    grid-template-columns: 2fr 3fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+.factories-display-container {
+    display: flex;
+    height: 100vh;
+}
+
+.cookie-container {
+    display: flex;
+    height: 100vh;
+}
+
+.factories-container {
+    display: flex;
+    height: 100vh;
+}

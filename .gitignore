@@ -1,0 +1,34 @@
+# BACKEND
+cookie-clicker-backend/node_modules
+cookie-clicker-backend/.env
+cookie-clicker-backend/public/uploads/
+cookie-clicker-backend/dist/
+
+# FRONTEND
+cookie-clicker-frontend/node_modules
+cookie-clicker-frontend/.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

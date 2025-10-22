@@ -1,0 +1,14 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    color: white
+}
+
+body {
+    background-image: url('http://localhost:3000/images/Cookie-clicker-background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; 
+}
+
