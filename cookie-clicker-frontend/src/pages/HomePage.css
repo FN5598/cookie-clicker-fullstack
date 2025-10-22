@@ -1,7 +1,8 @@
 .home-page-grid {
     display: grid;
-    grid-template-columns: 2fr 3fr 1fr;
+    grid-template-columns: 2fr 16px 3fr 16px 1fr;
     grid-template-rows: 1fr;
+    position: relative;
 }
 
 .factories-display-container {

@@ -1,6 +1,7 @@
 import { CookieContainer } from "../components/CookieContainer";
 import { FactoriesContainer } from "../components/FactoriesContainer";
 import { FactoriesDisplayContainer } from "../components/FactoriesDisplayContainer";
+import { Seperator } from "../components/Seperator";
 import "./HomePage.css";
 
 
@@ -10,7 +11,11 @@ export function HomePage({ factories }) {
 
             <CookieContainer />
 
-            <FactoriesDisplayContainer factories={factories}/>
+            <Seperator />
+
+            <FactoriesDisplayContainer factories={factories} />
+
+            <Seperator />
 
             <FactoriesContainer factories={factories} />
         </div>
