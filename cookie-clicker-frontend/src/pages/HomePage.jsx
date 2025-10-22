@@ -1,6 +1,6 @@
-import { CookieContainer } from "./CookieContainer";
-import { FactoriesContainer } from "./FactoriesContainer";
-import { FactoriesDisplayContainer } from "./FactoriesDisplayContainer";
+import { CookieContainer } from "../components/CookieContainer";
+import { FactoriesContainer } from "../components/FactoriesContainer";
+import { FactoriesDisplayContainer } from "../components/FactoriesDisplayContainer";
 import "./HomePage.css";
 
 
@@ -8,7 +8,7 @@ export function HomePage({ factories }) {
     return (
         <div className='home-page-grid'>
 
-            <CookieContainer factories={factories}/>
+            <CookieContainer />
 
             <FactoriesDisplayContainer factories={factories}/>
 
