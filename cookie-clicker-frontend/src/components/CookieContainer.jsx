@@ -15,7 +15,7 @@ export function CookieContainer() {
                 </div>
             </div>
 
-            <img src="http://localhost:3000/images/Big-cookie.png" className="big-cookie" />
+            <img src="src/assets/Big-cookie.png" className="big-cookie" />
 
             <div className="wave-container">
                 <Wave fill="#6c63ff" height={100} amplitude={30} speed={0.2} points={3} />

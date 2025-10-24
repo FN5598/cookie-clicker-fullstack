@@ -1,8 +1,10 @@
 import './Seperator.css';
 
-export function Seperator() {
+export function Seperator({ height }) {
     return(
-        <div className="seperator">
+        <div className="seperator"
+        style={{height: height + 'px'}}
+        >
             
         </div>
     );

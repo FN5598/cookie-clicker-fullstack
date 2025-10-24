@@ -1,0 +1,30 @@
+.factories-display-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.stats-options-container,
+.info-legacy-container {
+    display: flex;
+    flex-direction: column;
+    background-image: url("src/assets/Settings-background.png");
+}
+
+.owned-factories-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    background-color: rgb(34, 34, 34);
+    max-height: 32px;
+}
+
+.owned-factories-image {
+    max-width: 28px;
+    border-radius: 50%;
+}
