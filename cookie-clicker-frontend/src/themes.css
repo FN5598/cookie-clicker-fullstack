@@ -1,0 +1,39 @@
+:root {
+  --bg-dark: hsl(247 100% 5%);
+  --bg: hsl(244 75% 8%);
+  --bg-light: hsl(240 50% 13%);
+  --bg-blue: hsl(240, 100%, 35%);
+
+  --text: hsl(234 90% 100%);
+  --text-muted: hsl(0 0 80%);
+  
+  --bg-blue-highlight: hsl(240, 40%, 35%);
+  --highlight: hsl(238 34% 50%);
+
+  --border: hsl(240 40% 39%);
+  --border-muted: hsl(240 40% 15%);
+
+  --primary: hsl(235 100% 82%);
+  --secondary: hsl(51 53% 52%);
+  --danger: hsl(8 68% 66%);
+  --warning: hsl(52 59% 44%);
+  --success: hsl(152 45% 49%);
+  --info: hsl(217 80% 68%);
+}
+
+[data-theme="light"] {
+  --bg-dark: hsl(220 15% 95%);
+  --bg: hsl(220 10% 98%);
+  --bg-light: hsl(220 8% 100%);
+  --text: hsl(220 15% 10%);
+  --text-muted: hsl(220 10% 50%);
+  --highlight: hsl(220 30% 70%);
+  --border: hsl(220 10% 80%);
+  --border-muted: hsl(220 10% 90%);
+  --primary: hsl(220 90% 50%);
+  --secondary: hsl(50 70% 50%);
+  --danger: hsl(8 68% 66%);
+  --warning: hsl(52 59% 44%);
+  --success: hsl(152 45% 49%);
+  --info: hsl(217 80% 68%);
+}

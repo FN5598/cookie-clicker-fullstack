@@ -3,7 +3,9 @@ import { Routes, Route } from 'react-router';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
 import './App.css'
+import './themes.css'
 import axios from 'axios';
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
         <Route path='/' element={<HomePage factories={factories}/>} />
         <Route path="*" element={<NotFoundPage />} />
         <Route path='login' element={<LoginPage />} />
+        <Route path='register' element={<RegisterPage />} />
       </Routes>
     </>
   )

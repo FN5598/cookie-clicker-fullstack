@@ -1,4 +1,4 @@
-.login-container {
+.signup-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7,7 +7,7 @@
     background-image: url('src/assets/Login-cookie-background.png');
 }
 
-.login-wrapper {
+.signup-wrapper {
     background-color: var(--bg);
     border: 1px solid var(--border);
     display: flex;
@@ -20,27 +20,27 @@
     width: 300px;
 }
 
-.login-wrapper input {
+.signup-wrapper input {
     border: 1px solid hsl(240 40% 15%);
     padding: 10px 5px;
     border-radius: 5px;
 }
 
-.login-wrapper p {
+.signup-wrapper p {
     margin-bottom: 5px;
     margin-left: 3px;
     color: var(--text-muted);
     font-size: 13px;
 }
 
-.login-button-container {
+.signup-button-container {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 15px;
 }
 
-#login-button {
+#signup-button {
     border: 1px solid var(--border-muted);
     padding: 10px 20px;
     border-radius: 5px;
@@ -48,23 +48,22 @@
     font-size: 15px;
 }
 
-#sign-up-button:hover,
-#login-button:hover {
+#signup-button:hover {
     background-color: var(--success);
 }
 
-.sign-in-link p {
+.log-in-link p {
     color: var(--text-muted);
     font-size: 13px;
 }
 
-.sign-in-link a {
+.log-in-link a {
     color: var(--text-muted);
     font-size: 11px;
     transition: color 0.2s;
 }
 
-.sign-in-link {
+.log-in-link {
     display: flex;
     align-items: center;
     justify-items: center;
@@ -72,7 +71,7 @@
     margin-top: 30px;
 }
 
-.sign-in-link a:hover {
+.log-in-link a:hover {
     color: var(--text);
     text-decoration: underline;
 }

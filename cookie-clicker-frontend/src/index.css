@@ -12,3 +12,63 @@ body {
     background-attachment: fixed; 
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  /* optional, for a clean default font */
+  color: var(--text);
+}
+
+/* Remove underline from links and inherit color */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Make buttons have pointer cursor */
+button {
+  cursor: pointer;
+  background: none;
+  /* optional: remove default background */
+  border: none;
+  /* optional: remove default border */
+}
+
+/* Inputs and textareas: remove outline/border on focus */
+input,
+textarea,
+select {
+  outline: none;
+  border: none;
+  font: inherit;
+  background: none;
+}
+
+/* Optional: remove list styles */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Optional: images responsive */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Optional: clickable elements remove tap highlight on mobile */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.blur {
+  filter: blur(3px);
+}
