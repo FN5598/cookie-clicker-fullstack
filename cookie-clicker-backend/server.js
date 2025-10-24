@@ -3,12 +3,15 @@ const dotenv = require('dotenv').config();
 const cors = require('cors');
 const connectDB = require('./config/connectDB');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // connect to DB
 connectDB();
+
+app.use(cookieParser());
 
 // CORS
 app.use(cors({
@@ -25,6 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 // API routes
 app.use('/api/factories', require('./routes/factoriesRoutes'));
 app.use('/api/users', require('./routes/usersRoutes'));
+app.use("/auth", require('./routes/authRoutes'));
 
 // Start server
 app.listen(PORT, () => {
