@@ -1,6 +1,23 @@
 import './FactoriesContainer.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
+
 
 export function FactoriesContainer({ factories }) {
+    const navigate = useNavigate()
+
+    async function logout() {
+
+        try {
+            const res = await axios.post('http://localhost:3000/auth/logout', {}, { withCredentials: true });
+            console.log(res.data);
+            localStorage.clear();
+            navigate('/login');
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     return (
         <div className="factories-container">
 
@@ -27,6 +44,9 @@ export function FactoriesContainer({ factories }) {
                     })
                 )}
             </div>
+            <button
+                onClick={logout}
+            >LOG OUT</button>
         </div>
     );
 }

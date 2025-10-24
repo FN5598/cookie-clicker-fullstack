@@ -20,7 +20,7 @@ export function RegisterPage() {
         }));
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
         axios.post('http://localhost:3000/auth/register', formData)
             .then((res) => {

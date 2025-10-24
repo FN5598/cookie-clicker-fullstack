@@ -1,5 +1,5 @@
 .seperator {
-    background-image: url('src/assets/wood-texture-background.png');
+    background-image: url('/wood-texture-background.png');
     width: 100%;
     height: 100%;
   background-size: cover;      /* scales image to fill container, may crop */

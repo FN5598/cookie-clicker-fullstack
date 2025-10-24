@@ -5,11 +5,11 @@ import { Seperator } from "../components/Seperator";
 import "./HomePage.css";
 
 
-export function HomePage({ factories }) {
+export function HomePage({ factories, currentUser }) {
     return (
         <div className='home-page-grid'>
 
-            <CookieContainer />
+            <CookieContainer currentUser={currentUser}/>
 
             <Seperator />
 

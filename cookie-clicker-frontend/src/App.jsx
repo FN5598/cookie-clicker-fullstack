@@ -4,30 +4,41 @@ import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
+import { ProtectedRoutes } from './utils/ProtectedRoutes';
 import './App.css'
 import './themes.css'
 import axios from 'axios';
 
 function App() {
 
-  const [factories, setFactories] = useState('');
+  const [factories, setFactories] = useState([]);
+  const [users, setUsers] = useState([])
 
   useEffect(() => {
-    const fetchFactoriesData = async () => {
-      const res = await axios.get('http://localhost:3000/api/factories');
-      setFactories(res.data);
-    }
+    const fetchData = async () => {
+      try {
+        const factoriesRes = await axios.get('http://localhost:3000/api/factories');
+        setFactories(factoriesRes.data);
 
-    fetchFactoriesData();
+        const usersRes = await axios.get('http://localhost:3000/api/users');
+        setUsers(usersRes.data);
+      } catch (err) {
+        console.error("Error fetching data: ", err);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <>
       <Routes>
-        <Route path='/' element={<HomePage factories={factories}/>} />
-        <Route path="*" element={<NotFoundPage />} />
         <Route path='login' element={<LoginPage />} />
         <Route path='register' element={<RegisterPage />} />
+        <Route element={<ProtectedRoutes users={users}/>}>
+          <Route path="/home/:id" element={<HomePage factories={factories} users={users} />} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   )

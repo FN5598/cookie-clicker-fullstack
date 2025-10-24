@@ -19,12 +19,16 @@ export function LoginPage() {
         }))
     }
 
-    function handleSubmit() {
+    function handleSubmit(event) {
         event.preventDefault();
-        axios.post('http://localhost:3000/auth/login', loginData)
+        axios.post('http://localhost:3000/auth/login', loginData, {
+            withCredentials: true
+        })
             .then((res) => {
                 console.log(res.data);
-                navigate('/');
+                const userId = res.data.user.id;
+                localStorage.setItem("userId", userId);
+                navigate(`/home/${userId}`);
             })
             .catch((err) => {
                 console.log(err);

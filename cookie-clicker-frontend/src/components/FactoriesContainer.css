@@ -18,7 +18,7 @@
     max-height: 64px;
     
     
-    background-image: url('src/assets/Factory-background.png');
+    background-image: url('/Factory-background.png');
     background-size: cover;
     background-repeat: no-repeat;
 
@@ -65,7 +65,7 @@
     left: 0%;
     width: 18px;
     height: 18px;
-    background-image: url('src/assets/Big-cookie.png');
+    background-image: url('/assets/Big-cookie.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

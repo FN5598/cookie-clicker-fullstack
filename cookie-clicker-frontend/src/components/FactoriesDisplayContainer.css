@@ -13,7 +13,7 @@
 .info-legacy-container {
     display: flex;
     flex-direction: column;
-    background-image: url("src/assets/Settings-background.png");
+    background-image: url("/Settings-background.png");
 }
 
 .owned-factories-container {

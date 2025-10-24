@@ -5,7 +5,7 @@
 }
 
 body {
-    background-image: url('src/assets/Cookie-clicker-background.jpg');
+    background-image: url('/Cookie-clicker-background.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

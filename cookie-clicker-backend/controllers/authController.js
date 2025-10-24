@@ -67,7 +67,14 @@ const login = async (req, res) => {
                 httpOnly: true,
                 secure: true,
                 sameSite: 'lax',
-                maxAge: 60 * 60 * 1000
+                maxAge: 60 * 60 * 1000 // 1 hour
+            });
+
+            res.cookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'lax',
+                maxAge: 7 * 24 * 60 * 60 * 1000 // 1 day
             });
             res.status(200).json({ refreshToken, accessToken, user: { id: user._id } });
         } else {
@@ -115,12 +122,28 @@ const refresh = async (req, res) => {
         httpOnly: true,
         maxAge: 60 * 60 * 1000
     });
-    res.status(200).json({ message: "Successfully updated access token"});
+    res.status(200).json({ userId: user._id});
+}
+
+//@desc Check if the user is logged in
+//@route GET /auth/check
+//@access public
+const checkUser = async (req, res) => {
+    const token = req.cookies.accessToken;
+    if(!token) return res.status(401).json({ loggedIn: false });
+
+    try {
+        const user = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        res.json({ loggedIn: true, userId: user._id});
+    } catch(err) {
+        res.status(401).json({ loggedIn: false });
+    }
 }
 
 module.exports = {
     register,
     login,
     logout,
-    refresh
+    refresh,
+    checkUser
 }
