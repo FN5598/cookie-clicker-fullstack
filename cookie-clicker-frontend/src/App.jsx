@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router';
 import { HomePage } from './pages/HomePage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { LoginPage } from './pages/LoginPage';
 import './App.css'
 import axios from 'axios';
 
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path='/' element={<HomePage factories={factories}/>} />
         <Route path="*" element={<NotFoundPage />} />
+        <Route path='login' element={<LoginPage />} />
       </Routes>
     </>
   )

@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // API routes
 app.use('/api/factories', require('./routes/factoriesRoutes'));
+app.use('/api/users', require('./routes/usersRoutes'));
 
 // Start server
 app.listen(PORT, () => {

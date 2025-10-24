@@ -30,7 +30,7 @@ export function FactoriesDisplayContainer({ factories }) {
 
             <Seperator height={16}/>
 
-            <div class="owned-factories-display-container">
+            <div className="owned-factories-display-container">
             </div>
         </div>
     );
