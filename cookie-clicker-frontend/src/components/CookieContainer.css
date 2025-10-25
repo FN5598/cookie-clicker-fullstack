@@ -15,6 +15,11 @@
 
 .big-cookie {
     width: 350px;
+    transition: width 0.1s ease;
+}
+
+.big-cookie:active {
+    width: 325px;
 }
 
 .cookie-production-container {

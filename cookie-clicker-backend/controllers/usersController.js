@@ -27,7 +27,7 @@ const allUsers = async (req, res) => {
 //@access public
 const createUser = async (req, res) => {
     try {
-        const { username, email, password,  } = req.body;
+        const { username, email, password, } = req.body;
         if (!username || !email || !password) {
             return res.status(400).json({ message: "All fields are mandatory" });
         }
@@ -54,41 +54,48 @@ const createUser = async (req, res) => {
 //@desc Get user
 //@route GET /api/users/:id
 //access public
-const getUser = async (req, res) => {   
+const getUser = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id);
-    if(!user) {
-        return res.status(404).json({message: "User doesn't exist"});
+    if (!user) {
+        return res.status(404).json({ message: "User doesn't exist" });
     }
     res.status(200).json(user);
 }
 
-//@desc Update user
-//@route PUT /api/users/:id
+//@desc Update user cookies
+//@route PUT /api/users/cookies/:id
 //@access public
-const updateUser = async (req, res) => {
+const updateUserCookies = async (req, res) => {
     const { id } = req.params;
+    
+    const { cookies } = req.body;
+    if(!cookies || cookies <= 0) return res.status(400).json({message: "Give valid cookies amount"});
+
     const user = await User.findById(id);
-    if(!user) {
-        return res.status(404).json({ message: "User not found"});
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
     }
+
     const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
-        req.body,
+        {
+            $inc: { totalCookies: cookies }
+        },
         { new: true }
     );
 
-    res.status(200).json(updatedUser);
+    res.status(200).json({ totalCookies: updatedUser.totalCookies });
 }
 
 const deleteUser = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id);
-    if(!user) {
-        return res.status(404).json({message: "User not found"});
+    if (!user) {
+        return res.status(404).json({ message: "User not found" });
     }
     const deletedUser = await User.findByIdAndDelete(id);
-    
+
     res.status(200).json(deletedUser);
 }
 
@@ -97,6 +104,6 @@ module.exports = {
     allUsers,
     createUser,
     getUser,
-    updateUser,
-    deleteUser
+    updateUserCookies,
+    deleteUser,
 }
