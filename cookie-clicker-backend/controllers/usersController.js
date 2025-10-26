@@ -1,5 +1,5 @@
-const { findByIdAndUpdate, findById } = require('../model/factorySchema');
 const User = require('../model/userSchema');
+const Factory = require('../model/factorySchema');
 const bcrypt = require('bcrypt');
 
 //@desc Get all users from DB
@@ -96,36 +96,44 @@ const updateUserFactories = async (req, res) => {
         const { id } = req.params;
 
         const { factoryId, factoryAmount } = req.body;
-        if (!factoryId) return res.status(400).json({ message: "Give valid factory id" });
+        if (!factoryId) return res.status(400).json({ message: "Please provide a valid factory ID." });
+
 
         const user = await User.findById(id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
+        const factory = await Factory.findById(factoryId);
+        if (!user || !factory) {
+            return res.status(404).json({ message: "User or factory not found" });
         }
 
-        const updatedUser = await User.findOneAndUpdate(
-            { _id: id, "factories.factory": factoryId },
-            { $inc: { "factories.$.amount": factoryAmount || 1 } },
-            { new: true }
-        );
-
-        if (!updatedUser) {
-            await User.findByIdAndUpdate(
-                id,
-                { $push: { factories: { factory: factoryId, amount: factoryAmount || 1 } } },
-                { new: true }
-            );
+        const factoryToUpdate = user.factories.find(f => f._id === factoryId);
+        let totalCost = 0;
+        for (let i = 0; i < factoryAmount; i++) {
+            const priceForThisFactory = factoryToUpdate.startingPrice * Math.pow(1.15, (factoryToUpdate.amount - 1) + i);
+            totalCost += priceForThisFactory;
         }
 
-        const finalUser = await User.findById(id);
+        if (user.totalCookies < totalCost) {
+            return res.status(400).json({ message: "Not enough cookies" });
+        }
 
-        res.status(200).json(finalUser.factories);
+        factoryToUpdate.amount += factoryAmount;
+        factoryToUpdate.currentPrice = factoryToUpdate.startingPrice * Math.pow(1.15, factoryToUpdate.amount);
+        user.totalCookies -= totalCost;
+
+        const updatedUser = await user.save();
+
+        console.log(updatedUser);
+        res.status(200).json(updatedUser);
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: "Backend issue: ", err });
+        res.status(500).json({ message: "Internal server error" });
     }
 }
 
+
+//@desc Delete a user
+//@route DELETE /api/users/:id
+//@access private
 const deleteUser = async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id);

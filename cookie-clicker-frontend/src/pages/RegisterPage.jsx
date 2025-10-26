@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./RegisterPage.css";
 import axios from 'axios';
 
 export function RegisterPage() {
-    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         username: '',
@@ -25,7 +24,7 @@ export function RegisterPage() {
         axios.post('http://localhost:3000/auth/register', formData)
             .then((res) => {
                 console.log(res.data);
-                navigate('/login');
+                window.location.href = '/login';
             })
             .catch((err) => {
                 console.error(err);

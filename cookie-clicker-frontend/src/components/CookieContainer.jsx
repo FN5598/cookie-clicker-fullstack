@@ -1,5 +1,5 @@
 import { Wave } from "./Wave";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import "./CookieContainer.css";
 import { useOutletContext } from "react-router";
@@ -9,7 +9,7 @@ import useDebounce from "../utils/hooks/useDebounce";
 export function CookieContainer() {
     const currentUser = useOutletContext();
     const [cookiesCount, setCookiesCount] = useState(0);
-    const [localClicks, setLocalClicks] = useState(0);
+    const localClicksRef = useRef(0);
 
     useEffect(() => {
         async function fetchUserCookies() {
@@ -23,29 +23,26 @@ export function CookieContainer() {
             } 
         }
         fetchUserCookies();
-    }, [currentUser._id]);
+    }, [currentUser._id, currentUser.totalCookies]);
 
     const debounce = useDebounce();
 
     function handleClick() {
-        setLocalClicks(prev => prev + 1);
+        localClicksRef.current += 1;
         setCookiesCount(prev => prev + 1);
 
         debounce( async () => {
             try {
                 const res = await axios.put(`http://localhost:3000/api/users/cookies/${currentUser._id}`, 
-                    { cookies: localClicks },
+                    { cookies: localClicksRef.current },
                     { withCredentials: true }
                 );
-                console.log(res.data);
-                console.log(res.data.totalCookies);
-                
-                setLocalClicks(0);
+                localClicksRef.current = 0;
                 setCookiesCount(res.data.totalCookies);
             } catch (err) {
                 console.error("Error updating user cookies: ", err.message);
             }
-        })
+        }, 300)
     }
 
     return (
@@ -56,7 +53,7 @@ export function CookieContainer() {
                     <p>{currentUser.username}'s bakery</p>
                 </div>
                 <div className="cookie-production">
-                    <p>Total cookies: {cookiesCount}</p>
+                    <p>Total cookies: {Number(cookiesCount).toFixed(2)}</p>
                     <p>cookies per second</p>
                 </div>
             </div>
