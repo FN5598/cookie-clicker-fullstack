@@ -65,12 +65,12 @@ const getUser = async (req, res) => {
 
 //@desc Update user cookies
 //@route PUT /api/users/cookies/:id
-//@access public
+//@access private
 const updateUserCookies = async (req, res) => {
     const { id } = req.params;
-    
+
     const { cookies } = req.body;
-    if(!cookies || cookies <= 0) return res.status(400).json({message: "Give valid cookies amount"});
+    if (!cookies || cookies <= 0) return res.status(400).json({ message: "Give valid cookies amount" });
 
     const user = await User.findById(id);
     if (!user) {
@@ -86,6 +86,44 @@ const updateUserCookies = async (req, res) => {
     );
 
     res.status(200).json({ totalCookies: updatedUser.totalCookies });
+}
+
+//@desc Update user factories
+//@route PUT /api/users/factories/:id
+//@access private
+const updateUserFactories = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const { factoryId, factoryAmount } = req.body;
+        if (!factoryId) return res.status(400).json({ message: "Give valid factory id" });
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const updatedUser = await User.findOneAndUpdate(
+            { _id: id, "factories.factory": factoryId },
+            { $inc: { "factories.$.amount": factoryAmount || 1 } },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            await User.findByIdAndUpdate(
+                id,
+                { $push: { factories: { factory: factoryId, amount: factoryAmount || 1 } } },
+                { new: true }
+            );
+        }
+
+        const finalUser = await User.findById(id);
+
+        res.status(200).json(finalUser.factories);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Backend issue: ", err });
+    }
 }
 
 const deleteUser = async (req, res) => {
@@ -106,4 +144,5 @@ module.exports = {
     getUser,
     updateUserCookies,
     deleteUser,
+    updateUserFactories
 }

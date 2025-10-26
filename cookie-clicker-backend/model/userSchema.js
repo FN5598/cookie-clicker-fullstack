@@ -21,16 +21,18 @@ const userSchema = mongoose.Schema({
         type: Number,
         default: 0
     },
-    factories: {
-        factory: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Factory'
-        },
-        amount: {
-            type: Number,
-            default: 0
+    factories: [
+        {
+            factory: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Factory'
+            },
+            amount: {
+                type: Number,
+                default: 0
+            }
         }
-    }
+    ]
 },
     {
         timestamps: true,
