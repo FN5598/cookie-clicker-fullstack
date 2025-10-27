@@ -119,6 +119,7 @@ const updateUserFactories = async (req, res) => {
         factoryToUpdate.amount += factoryAmount;
         factoryToUpdate.currentPrice = factoryToUpdate.startingPrice * Math.pow(1.15, factoryToUpdate.amount);
         user.totalCookies -= totalCost;
+        user.cookiesPerSecond += factoryToUpdate.productionRate;
 
         const updatedUser = await user.save();
 

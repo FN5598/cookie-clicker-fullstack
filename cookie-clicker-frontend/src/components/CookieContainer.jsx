@@ -1,33 +1,14 @@
 import { Wave } from "./Wave";
-import { useRef } from "react";
-import axios from 'axios';
 import "./CookieContainer.css";
 import { useOutletContext } from "react-router";
 import bigCookie from '/Big-cookie.png';
-import useDebounce from "../utils/hooks/useDebounce";
 
-export function CookieContainer({ setCookiesCount, cookiesCount }) {
+export function CookieContainer({ setCookiesCount, cookiesCount, cookiesPerSecond, userCookiesRef }) {
     const currentUser = useOutletContext();
-    const localClicksRef = useRef(0);
-
-    const debounce = useDebounce();
 
     function handleClick() {
-        localClicksRef.current += 1;
+        userCookiesRef.currentUser += 1;
         setCookiesCount(prev => prev + 1);
-
-        debounce(async () => {
-            try {
-                const res = await axios.put(`http://localhost:3000/api/users/cookies/${currentUser._id}`,
-                    { cookies: localClicksRef.current },
-                    { withCredentials: true }
-                );
-                localClicksRef.current = 0;
-                setCookiesCount(res.data.totalCookies);
-            } catch (err) {
-                console.error("Error updating user cookies: ", err.message);
-            }
-        }, 300)
     }
 
     return (
@@ -39,7 +20,7 @@ export function CookieContainer({ setCookiesCount, cookiesCount }) {
                 </div>
                 <div className="cookie-production">
                     <p>Total cookies: {Number(cookiesCount).toFixed(2)}</p>
-                    <p>cookies per second</p>
+                    <p>cookies per second {Number(cookiesPerSecond).toFixed(2)}</p>
                 </div>
             </div>
 

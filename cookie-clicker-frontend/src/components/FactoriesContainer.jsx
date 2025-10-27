@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useDebounce from '../utils/hooks/useDebounce';
 import { calculateFactoryPrice } from '../utils/calculateFactoryPrice';
 
-export function FactoriesContainer({ factories, setCookiesCount, cookiesCount }) {
+export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, setCookiesPerSecond }) {
     const navigate = useNavigate();
 
     async function logout() {
@@ -53,18 +53,12 @@ export function FactoriesContainer({ factories, setCookiesCount, cookiesCount })
                 totalCost += priceForThisFactory;
             }
 
-            console.log('Cost check:', {
-                totalCost,
-                cookiesCount,
-                canAfford: cookiesCount >= totalCost,
-                types: { totalCost: typeof totalCost, userCookies: typeof userCookies }
-            });
-
             if (cookiesCount < totalCost) {
                 alert(`Need ${Number(totalCost).toFixed(2)} cookies, but only have ${Number(cookiesCount).toFixed(2)}`);
                 return;
             }
             setCookiesCount(cookiesCount - totalCost);
+            setCookiesPerSecond(prev => prev + factory.productionRate);
             userFactoryRef.current += 1;
 
             setUserFactories(prev => prev.map(f => {
@@ -90,8 +84,8 @@ export function FactoriesContainer({ factories, setCookiesCount, cookiesCount })
                     {
                         withCredentials: true
                     });
-                console.log(res.data.factories);
                 setCookiesCount(res.data.totalCookies);
+                setCookiesPerSecond(res.data.cookiesPerSecond);
                 userFactoryRef.current = 0;
             }, 300)
         } catch (err) {
