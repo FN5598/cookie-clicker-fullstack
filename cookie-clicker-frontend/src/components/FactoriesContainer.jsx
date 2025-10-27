@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import useDebounce from '../utils/hooks/useDebounce';
 import { calculateFactoryPrice } from '../utils/calculateFactoryPrice';
 
-export function FactoriesContainer({ factories }) {
+export function FactoriesContainer({ factories, setCookiesCount, cookiesCount }) {
     const navigate = useNavigate();
 
     async function logout() {
@@ -53,22 +53,18 @@ export function FactoriesContainer({ factories }) {
                 totalCost += priceForThisFactory;
             }
 
-
-            const user = await fetchUserFactoriesData(userId);
-            console.log(user);
-            const userCookies = user.totalCookies
             console.log('Cost check:', {
                 totalCost,
-                userCookies,
-                canAfford: userCookies >= totalCost,
+                cookiesCount,
+                canAfford: cookiesCount >= totalCost,
                 types: { totalCost: typeof totalCost, userCookies: typeof userCookies }
             });
 
-            if (userCookies < totalCost) {
-                alert(`Need ${Number(totalCost).toFixed(2)} cookies, but only have ${Number(userCookies).toFixed(2)}`);
+            if (cookiesCount < totalCost) {
+                alert(`Need ${Number(totalCost).toFixed(2)} cookies, but only have ${Number(cookiesCount).toFixed(2)}`);
                 return;
             }
-
+            setCookiesCount(cookiesCount - totalCost);
             userFactoryRef.current += 1;
 
             setUserFactories(prev => prev.map(f => {
@@ -95,6 +91,7 @@ export function FactoriesContainer({ factories }) {
                         withCredentials: true
                     });
                 console.log(res.data.factories);
+                setCookiesCount(res.data.totalCookies);
                 userFactoryRef.current = 0;
             }, 300)
         } catch (err) {
@@ -125,7 +122,7 @@ export function FactoriesContainer({ factories }) {
                                     </div>
                                     <div className="factory-name-container">
                                         <p className="factory-name">{factory.name}</p>
-                                        <p className="factory-price">{(userFactories.find(f => f._id === factory._id))?.currentPrice}</p>
+                                        <p className="factory-price">{Number((userFactories.find(f => f._id === factory._id))?.currentPrice).toFixed(2)}</p>
                                     </div>
                                 </div>
                                 <p className="factory-amount">{(userFactories.find(f => f._id === factory._id))?.amount}</p>

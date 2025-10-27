@@ -122,7 +122,7 @@ const updateUserFactories = async (req, res) => {
 
         const updatedUser = await user.save();
 
-        console.log(updatedUser);
+        console.log(updatedUser.totalCookies);
         res.status(200).json(updatedUser);
     } catch (err) {
         console.log(err);

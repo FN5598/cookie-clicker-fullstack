@@ -1,29 +1,14 @@
 import { Wave } from "./Wave";
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import axios from 'axios';
 import "./CookieContainer.css";
 import { useOutletContext } from "react-router";
 import bigCookie from '/Big-cookie.png';
 import useDebounce from "../utils/hooks/useDebounce";
 
-export function CookieContainer() {
+export function CookieContainer({ setCookiesCount, cookiesCount }) {
     const currentUser = useOutletContext();
-    const [cookiesCount, setCookiesCount] = useState(0);
     const localClicksRef = useRef(0);
-
-    useEffect(() => {
-        async function fetchUserCookies() {
-            try {
-                const res = await axios.get(`http://localhost:3000/api/users/${currentUser._id}`, 
-                    { withCredentials: true }
-                );
-                setCookiesCount(res.data.totalCookies);
-            } catch (err) {
-                console.log("Error fetching user cookies: ", err);
-            } 
-        }
-        fetchUserCookies();
-    }, [currentUser._id, currentUser.totalCookies]);
 
     const debounce = useDebounce();
 
@@ -31,9 +16,9 @@ export function CookieContainer() {
         localClicksRef.current += 1;
         setCookiesCount(prev => prev + 1);
 
-        debounce( async () => {
+        debounce(async () => {
             try {
-                const res = await axios.put(`http://localhost:3000/api/users/cookies/${currentUser._id}`, 
+                const res = await axios.put(`http://localhost:3000/api/users/cookies/${currentUser._id}`,
                     { cookies: localClicksRef.current },
                     { withCredentials: true }
                 );

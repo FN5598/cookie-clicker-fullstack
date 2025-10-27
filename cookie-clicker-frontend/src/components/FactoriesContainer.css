@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    flex-direction: column;    
+    flex-direction: column;
     overflow-y: auto;
 }
 
@@ -16,20 +16,22 @@
     border-left: 5px solid rgba(177, 146, 110, 1);
     padding-right: 3px;
     max-height: 64px;
-    
-    
+
+
     background-image: url('/Factory-background.png');
     background-size: cover;
     background-repeat: no-repeat;
 
     cursor: pointer;
     transition: filter 0.3s ease;
+    overflow-y: hidden;
 }
 
 .factory-wrapper {
     display: flex;
     flex-direction: row;
     align-items: center;
+    overflow-y: hidden; 
 }
 
 .factory-container:hover {
