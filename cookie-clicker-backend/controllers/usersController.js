@@ -140,6 +140,50 @@ const updateUserFactories = async (req, res) => {
 }
 
 
+//@desc Auto save user data on page change
+//@route PUT /api/users/auto-save/:id
+//@access private
+const autoSave = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const { totalCookies, cookiesPerSecond, factories } = req.body;
+
+        if (!totalCookies) {
+            console.log("Total cookies not found");
+            res.status(404);
+        };
+
+        if (!cookiesPerSecond) {
+            console.log("Cookies per second not found");
+            res.status(404);
+        };
+
+        if (!factories) {
+            console.log("User factories not found");
+            res.status(404);
+        }
+
+        const user = await User.findById(id);
+        if (!user) return res.status(400).json({ message: "User not found" });
+
+        user.totalCookies = totalCookies;
+        user.cookiesPerSecond = cookiesPerSecond;
+        user.factories = factories;
+
+        const updatedUser = await user.save();
+
+        res.status(200).json({
+            totalCookies: updatedUser.totalCookies,
+            cookiesPerSecond: updatedUser.cookiesPerSecond
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+
 //@desc Delete a user
 //@route DELETE /api/users/:id
 //@access private
@@ -160,5 +204,6 @@ module.exports = {
     createUser,
     getUser,
     deleteUser,
-    updateUserFactories
+    updateUserFactories,
+    autoSave
 }

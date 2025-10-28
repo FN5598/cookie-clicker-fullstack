@@ -1,10 +1,10 @@
 import './FactoriesContainer.css';
 import axios from 'axios';
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { calculateFactoryPrice } from '../utils/calculateFactoryPrice';
 
-export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, setCookiesPerSecond }) {
+export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, setCookiesPerSecond, userFactories, setUserFactories }) {
     const navigate = useNavigate();
 
     async function logout() {
@@ -18,7 +18,6 @@ export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, s
         }
     }
 
-    const [userFactories, setUserFactories] = useState([]);
     const userFactoryRef = useRef(0);
     const userId = localStorage.getItem('userId');
 
@@ -38,7 +37,7 @@ export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, s
         }
 
         loadUserData();
-    }, [userId]);
+    }, [userId, setUserFactories]);
 
     async function handleFactoryClick(factoryId) {
         try {
