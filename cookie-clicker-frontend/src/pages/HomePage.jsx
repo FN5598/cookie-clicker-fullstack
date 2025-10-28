@@ -16,19 +16,20 @@ export function HomePage({ factories }) {
     const userCookiesRef = useRef(0);
     const cookiesPerSecondRef = useRef(0);
 
-    useEffect(() => {
-        async function fetchUserCookies() {
-            try {
-                const res = await axios.get(`http://localhost:3000/api/users/${currentUser._id}`,
-                    { withCredentials: true }
-                );
-                setCookiesCount(res.data.totalCookies);
-                setCookiesPerSecond(res.data.cookiesPerSecond);
-            } catch (err) {
-                console.log("Error fetching user cookies: ", err);
-            }
+    async function fetchUserCookies(userId) {
+        try {
+            const res = await axios.get(`http://localhost:3000/api/users/${userId}`,
+                { withCredentials: true }
+            );
+            setCookiesCount(res.data.totalCookies);
+            setCookiesPerSecond(res.data.cookiesPerSecond);
+        } catch (err) {
+            console.log("Error fetching user cookies: ", err);
         }
-        fetchUserCookies();
+    }
+
+    useEffect(() => {
+        fetchUserCookies(currentUser._id);
     }, [currentUser._id]);
 
     useEffect(() => {
@@ -46,28 +47,6 @@ export function HomePage({ factories }) {
 
         return () => clearInterval(interval);
     }, []);
-
-    useEffect(() => {
-        const interval = setInterval(async () => {
-            try {
-                await axios.put(`http://localhost:3000/api/users/${currentUser._id}`,
-                    {
-                        totalCookies: userCookiesRef.current,
-                        cookiesPerSecond: cookiesPerSecondRef.current
-                    },
-                    {
-                        withCredentials: true
-                    });
-                console.log("auto saved cookies to backend");
-            } catch (err) {
-                console.log("Failed to auto save cookies ", err);
-            }
-        }, 60000); // Every 60 seconds
-
-        return () => clearInterval(interval);
-    }, [currentUser._id]);
-
-
 
     return (
         <div className='home-page-grid'>

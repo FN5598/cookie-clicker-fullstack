@@ -2,7 +2,6 @@ import './FactoriesContainer.css';
 import axios from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useDebounce from '../utils/hooks/useDebounce';
 import { calculateFactoryPrice } from '../utils/calculateFactoryPrice';
 
 export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, setCookiesPerSecond }) {
@@ -22,7 +21,6 @@ export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, s
     const [userFactories, setUserFactories] = useState([]);
     const userFactoryRef = useRef(0);
     const userId = localStorage.getItem('userId');
-    const debounce = useDebounce();
 
 
     async function fetchUserFactoriesData(userId) {
@@ -52,7 +50,6 @@ export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, s
                 const priceForThisFactory = calculateFactoryPrice(factory.startingPrice, factory.amount + i);
                 totalCost += priceForThisFactory;
             }
-
             if (cookiesCount < totalCost) {
                 alert(`Need ${Number(totalCost).toFixed(2)} cookies, but only have ${Number(cookiesCount).toFixed(2)}`);
                 return;
@@ -73,21 +70,20 @@ export function FactoriesContainer({ factories, setCookiesCount, cookiesCount, s
                     }
                 }
                 return f;
-            }))
+            }));
 
-            debounce(async () => {
-                const res = await axios.put(`http://localhost:3000/api/users/factories/${userId}`,
-                    {
-                        factoryId,
-                        factoryAmount: userFactoryRef.current
-                    },
-                    {
-                        withCredentials: true
-                    });
-                setCookiesCount(res.data.totalCookies);
-                setCookiesPerSecond(res.data.cookiesPerSecond);
-                userFactoryRef.current = 0;
-            }, 300)
+
+            const res = await axios.put(`http://localhost:3000/api/users/factories/${userId}`,
+                {
+                    factoryId,
+                    factoryAmount: userFactoryRef.current
+                },
+                {
+                    withCredentials: true
+                });
+            setCookiesCount(res.data.totalCookies);
+            setCookiesPerSecond(res.data.cookiesPerSecond);
+            userFactoryRef.current = 0;
         } catch (err) {
             console.log(`Failed to update user factories data`, err);
         }

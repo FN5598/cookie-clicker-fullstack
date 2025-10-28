@@ -63,68 +63,76 @@ const getUser = async (req, res) => {
     res.status(200).json(user);
 }
 
-//@desc Update user cookies
-//@route PUT /api/users/cookies/:id
-//@access private
-const updateUserCookies = async (req, res) => {
-    const { id } = req.params;
-
-    const { cookies } = req.body;
-    if (!cookies || cookies <= 0) return res.status(400).json({ message: "Give valid cookies amount" });
-
-    const user = await User.findById(id);
-    if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        {
-            $inc: { totalCookies: cookies }
-        },
-        { new: true }
-    );
-
-    res.status(200).json({ totalCookies: updatedUser.totalCookies });
-}
-
 //@desc Update user factories
 //@route PUT /api/users/factories/:id
 //@access private
 const updateUserFactories = async (req, res) => {
     try {
         const { id } = req.params;
-
         const { factoryId, factoryAmount } = req.body;
-        if (!factoryId) return res.status(400).json({ message: "Please provide a valid factory ID." });
 
-
-        const user = await User.findById(id);
-        const factory = await Factory.findById(factoryId);
-        if (!user || !factory) {
-            return res.status(404).json({ message: "User or factory not found" });
+        if (!factoryId) {
+            return res.status(400).json({
+                message: "Please provide a valid factory ID.",
+                received: factoryId
+            });
         }
 
+        if (!factoryAmount || factoryAmount <= 0) {
+            return res.status(400).json({
+                message: "Please provide a valid factory amount.",
+                received: factoryAmount
+            });
+        }
+
+        console.log('Received request:', { id, factoryId, factoryAmount });
+
+        const user = await User.findById(id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const currentTime = Date.now();
+        const lastUpdateTime = new Date(user.updatedAt).getTime();
+        const timePassed = currentTime - lastUpdateTime;
+        const cookiesEarned = (user.cookiesPerSecond * timePassed) / 1000;
+
+        user.totalCookies += cookiesEarned;
+
         const factoryToUpdate = user.factories.find(f => f._id === factoryId);
+
+        if (!factoryToUpdate) return res.status(404).json({ message: "Factory not found in user's factories" });
+
+
+        const currentAmount = factoryToUpdate.amount
         let totalCost = 0;
+
         for (let i = 0; i < factoryAmount; i++) {
-            const priceForThisFactory = factoryToUpdate.startingPrice * Math.pow(1.15, (factoryToUpdate.amount - 1) + i);
+            const priceForThisFactory = factoryToUpdate.startingPrice * Math.pow(1.15, currentAmount + i);
             totalCost += priceForThisFactory;
         }
 
         if (user.totalCookies < totalCost) {
-            return res.status(400).json({ message: "Not enough cookies" });
+            await user.save();
+            return res.status(400).json({
+                message: "Not enough cookies",
+                needed: totalCost.toFixed(2),
+                available: user.totalCookies.toFixed(2)
+            });
         }
 
         factoryToUpdate.amount += factoryAmount;
         factoryToUpdate.currentPrice = factoryToUpdate.startingPrice * Math.pow(1.15, factoryToUpdate.amount);
         user.totalCookies -= totalCost;
-        user.cookiesPerSecond += factoryToUpdate.productionRate;
+        user.cookiesPerSecond += factoryToUpdate.productionRate * factoryAmount;
 
         const updatedUser = await user.save();
-
-        console.log(updatedUser.totalCookies);
-        res.status(200).json(updatedUser);
+        res.status(200).json({
+            totalCookies: updatedUser.totalCookies,
+            cookiesPerSecond: updatedUser.cookiesPerSecond,
+            factories: updatedUser.factories,
+            totalCookies: updatedUser.totalCookies
+        });
     } catch (err) {
         console.log(err);
         res.status(500).json({ message: "Internal server error" });
@@ -151,7 +159,6 @@ module.exports = {
     allUsers,
     createUser,
     getUser,
-    updateUserCookies,
     deleteUser,
     updateUserFactories
 }
